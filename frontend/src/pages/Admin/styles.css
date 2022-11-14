@@ -9,7 +9,6 @@
 
 @media (min-width: 1200px) {
   .admin-container {
-    display: flex;
     flex-direction: row;
   }
 
