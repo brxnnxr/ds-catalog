@@ -1,4 +1,5 @@
 import './styles.css';
+
 type Props = {
   name?: string;
 };
