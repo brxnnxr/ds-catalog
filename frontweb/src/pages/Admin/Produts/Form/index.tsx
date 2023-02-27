@@ -1,11 +1,14 @@
 import { AxiosRequestConfig } from 'axios';
 import { useEffect, useState } from 'react';
+import CurrencyInput from 'react-currency-input-field';
 import { useForm, Controller } from 'react-hook-form';
 import { useHistory, useParams } from 'react-router-dom';
 import Select from 'react-select';
 import { Category } from 'types/category';
 import { Product } from 'types/product';
 import { requestBackend } from 'util/requests';
+import { toast } from 'react-toastify';
+
 import './styles.css';
 
 type UrlParams = {
@@ -48,16 +51,25 @@ const Form = () => {
   }, [isEditing, productId, setValue]);
 
   const onSubmit = (formData: Product) => {
+    const data = {
+      ...formData,
+      price: String(formData.price).replace(',', '.'),
+    }; //quando der submit, vai pegar o formdata, e substituir as ',' por '.'
     const config: AxiosRequestConfig = {
       method: isEditing ? 'PUT' : 'POST',
-      url: isEditing ? `/products/${productId}` : '/products',
-      data: formData,
+      url: isEditing ? `/products/${productId}` : '/productsbtfe',
+      data: data,
       withCredentials: true,
     };
 
-    requestBackend(config).then(() => {
-      history.push('/admin/products');
-    });
+    requestBackend(config)
+      .then(() => {
+        toast.info('Produto cadastrado com sucesso!');
+        history.push('/admin/products');
+      })
+      .catch(() => {
+        toast.error('Erro ao cadastrar o produto!');
+      });
   };
 
   const handleCancel = () => {
@@ -115,16 +127,21 @@ const Form = () => {
               </div>
 
               <div className="margin-bottom-30">
-                <input
-                  {...register('price', {
-                    required: 'Campo obrigatório',
-                  })}
-                  type="text"
-                  className={`form-control base-input ${
-                    errors.price ? 'is-invalid' : ''
-                  }`}
-                  placeholder="Preço"
+                <Controller //para formatar o preço, deixar so number e colocar as so 2 decimais apos o ., usando a biblioteca CurrencyInnput
                   name="price"
+                  rules={{ required: 'Campo obrigatório' }}
+                  control={control}
+                  render={({ field }) => (
+                    <CurrencyInput
+                      placeholder="Preço"
+                      className={`form-control base-input ${
+                        errors.price ? 'is-invalid' : ''
+                      }`}
+                      disableGroupSeparators={true} //para desabilitar o ponto do milhar
+                      value={field.value}
+                      onValueChange={field.onChange}
+                    />
+                  )}
                 />
 
                 <div className="invalid-feedback d-block">

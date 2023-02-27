@@ -14,7 +14,7 @@ type Props = {
 
 const ProductCrudCard = ({ product, onDelete }: Props) => {
   const handleDelete = (productId: number) => {
-    if (!window.confirm('Tem certeza que gostaria de deletar?')) {
+    if (!window.confirm('Tem certeza que deseja deletar?')) {
       return;
     }
 
@@ -34,7 +34,6 @@ const ProductCrudCard = ({ product, onDelete }: Props) => {
       <div className="product-crud-card-top-container">
         <img src={product.imgUrl} alt={product.name} />
       </div>
-
       <div className="product-crud-card-description">
         <div className="product-crud-card-bottom-container">
           <h6>{product.name}</h6>
@@ -49,13 +48,12 @@ const ProductCrudCard = ({ product, onDelete }: Props) => {
       <div className="product-crud-card-buttons-container">
         <button
           onClick={() => handleDelete(product.id)}
-          className="btn-outline-danger product-crud-card-button product-crud-card-button-first"
+          className="btn btn-outline-danger product-crud-card-button product-crud-card-button-first"
         >
-          EXLUIR
+          EXCLUIR
         </button>
-
         <Link to={`/admin/products/${product.id}`}>
-          <button className="btn-outline-secondary product-crud-card-button">
+          <button className="btn btn-outline-secondary product-crud-card-button">
             EDITAR
           </button>
         </Link>
