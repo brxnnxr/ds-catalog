@@ -1,21 +1,6 @@
-import jwtDecode from 'jwt-decode'; //biblioteca para decodificar pra gerar um onj do tipo TokenData
-import { getAuthData } from './storage';
+import { Role } from 'types/role';
+import { getTokenData } from './token';
 
-export type Role = 'ROLE_OPERATOR' | 'ROLE_ADMIN';
-
-export type TokenData = {
-  exp: number;
-  user_name: string;
-  authorities: Role[];
-};
-
-export const getTokenData = (): TokenData | undefined => { //ou vai retornar TokenData ou undefined
-  try {
-    return jwtDecode(getAuthData().access_token) as TokenData; // esta esperando o type TokenData
-  } catch (error) {
-    return undefined;
-  }
-};
 
 export const isAuthenticated = (): boolean => {
   let tokenData = getTokenData();

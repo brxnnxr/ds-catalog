@@ -1,6 +1,6 @@
 import { formatPrice } from "util/formatters";
 
-test('formatPrice should format number pt-BR when given 10.1', ()=>{
+test('formatPrice should format number pt-BR when given 10.1', () => {
   //ARRANGE
   const value = 10.1;
 
